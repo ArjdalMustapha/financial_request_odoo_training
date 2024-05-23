@@ -1,0 +1,146 @@
+<odoo>
+    <data>
+       
+        <record id='financial_request_form' model='ir.actions.act_window'>
+            <field name='name'>Financial Request</field>
+            <field name='res_model'>financial.request</field>
+            <field name='view_mode'>tree,form,kanban,pivot</field>
+        </record>
+
+        <record id='financial_request_lines_form' model='ir.actions.act_window'>
+            <field name='name'>Financial Request Lines</field>
+            <field name='res_model'>financial.request.lines</field>
+            <field name='view_mode'>tree,form</field>
+        </record>
+
+        <record id="view_financial_request_list" model="ir.ui.view">
+            <field name="name">financial.request.list</field>
+            <field name="model">financial.request</field>
+            <field name="arch" type="xml">
+                <tree string="Financial Request List">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="project_id"/>
+                    <field name="task_ids" widget="many2many_tags"/>
+                    <field name="demandeur_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_financial_request_form" model="ir.ui.view">
+            <field name="name">financial.request.form</field>
+            <field name="model">financial.request</field>
+            <field name="arch" type="xml">
+                <form string='Financial Request'>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,canceled" options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                          <group>
+                            <field name='name'/>
+                            <field name='type'/>
+                            <field name='project_id'/>
+                          </group>
+                       
+                            <group>
+                                <field name='demandeur_id'/>
+                                <field name='task_ids' widget="many2many_tags"/>
+                        
+                                <field name="total" readonly="1" class="oe_inline"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Request Lines">
+                                <field name="line_ids">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="price"/>
+                                        <field name="quantity"/>
+                                        <field name="total" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                       
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_financial_request_kanban" model="ir.ui.view">
+            <field name="name">financial.request.kanban</field>
+            <field name="model">financial.request</field>
+            <field name="arch" type="xml">
+                <kanban string="Financial Requests">
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="project_id"/>
+                    <field name="task_ids"/>
+                    <field name="demandeur_id"/>
+                    <field name="state"/>
+                    <field name="total"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                    <div>
+                                        <field name="state"/>
+                                    </div>
+                                    <div>
+                                        <field name="type"/>
+                                    </div>
+                                    <div>
+                                        <field name="project_id"/>
+                                    </div>
+                                    <div>
+                                        <field name="total"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id='financial_request_search_view' model='ir.ui.view'>
+            <field name='name'>financial.request.search.view</field>
+            <field name='model'>financial.request</field>
+            <field name='arch' type='xml'>
+                <search string='Financial Request'>
+                    <field name='name' />
+                    <field name='state' />
+                    <field name='type' />
+                    <field name='project_id' />
+                    <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                    <filter name="confirmed" string="Confirmed" domain="[('state','=','confirmed')]"/>
+                    <filter name="canceled" string="Canceled" domain="[('state','=','canceled')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Total" name="total" context="{'group_by': 'total'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="view_financial_request_pivot" model="ir.ui.view">
+            <field name="name">financial.request.pivot</field>
+            <field name="model">financial.request</field>
+            <field name="arch" type="xml">
+                <pivot string="Financial Requests">
+                    <field name="name" type="row"/>
+                    <field name="state" type="row"/>
+                    <field name="project_id" type="row"/>
+                    <field name="total" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        
+    </data>
+</odoo>

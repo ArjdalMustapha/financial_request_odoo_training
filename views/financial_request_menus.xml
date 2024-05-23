@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+       
+        <menuitem id="financial_request_menu_root" name="Financial Request Menu"/>
+
+        
+        <menuitem id="financial_request_first_level_menu" 
+                  name="Financial Request Items" 
+                  parent="financial_request_menu_root"/>
+
+      
+        <menuitem id="financial_request_menu_action" 
+                  action="financial_request_form" 
+                  parent="financial_request_first_level_menu"/>
+    </data>
+</odoo>
